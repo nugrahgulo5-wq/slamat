@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Kejutan 🎁</title>
+
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #000000, #5454c0);
+    color: rgb(139, 137, 137);
+    font-family: 'Segoe UI', sans-serif;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+    overflow: hidden;
+}
+
+#awal, #kejutan {
+    position: absolute;
+}
+
+#kejutan {
+    display: none;
+    font-size: 3em;
+}
+
+/* FOTO */
+#foto {
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 20px;
+
+    opacity: 0;
+    transform: scale(0.5);
+    transition: 1s;
+}
+
+#foto.muncul {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* TEXT TYPING */
+#text {
+    white-space: pre-line;
+    border-right: 2px solid rgb(0, 0, 0);
+    padding-right: 5px;
+    animation: blink 1s infinite;
+}
+
+/* cursor kedip */
+@keyframes blink {
+    0%, 50%, 100% {border-color: white;}
+    25%, 75% {border-color: transparent;}
+}
+
+/* tombol */
+button {
+    padding: 10px 20px;
+    font-size: 1em;
+    border: none;
+    border-radius: 10px;
+    background-color: #ff4081;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #e91e63;
+}
+
+/* confetti */
+.confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    animation: jatuh 4s linear infinite;
+}
+
+@keyframes jatuh {
+    0% {transform: translateY(-100vh) translateX(0);}
+    50% {transform: translateY(50vh) translateX(30px);}
+    100% {transform: translateY(100vh) translateX(-30px);}
+}
+
+/* boneka jatuh */
+.boneka {
+    position: absolute;
+    animation: jatuhBoneka linear infinite;
+}
+
+/* boneka dari samping */
+.bonekaSamping {
+    position: absolute;
+    top: 50%;
+    font-size: 40px;
+    animation: masukSamping 3s linear forwards;
+}
+
+/* background boneka */
+.bonekaBg {
+    position: absolute;
+    opacity: 0.1;
+    animation: gerakBg 10s linear infinite;
+}
+
+/* animasi jatuh */
+@keyframes jatuhBoneka {
+    0% {transform: translateY(-100vh) rotate(0);}
+    100% {transform: translateY(100vh) rotate(360deg);}
+}
+
+/* animasi dari samping */
+@keyframes masukSamping {
+    0% {transform: translateX(-100vw);}
+    100% {transform: translateX(100vw);}
+}
+
+/* animasi background */
+@keyframes gerakBg {
+    0% {transform: translateY(0);}
+    100% {transform: translateY(-100vh);}
+}
+
+.firework {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    animation: ledak 1s ease-out forwards;
+}
+
+@keyframes ledak {
+    from {
+        transform: scale(0);
+        opacity: 1;
+    }
+    to {
+        transform: scale(8);
+        opacity: 0;
+    }
+}
+
+.love {
+    position: absolute;
+    color: rgb(0, 0, 0);
+    font-size: 20px;
+    animation: ledakLove 1.5s ease-out forwards;
+}
+
+@keyframes ledakLove {
+    from {
+        transform: scale(0);
+        opacity: 1;
+    }
+    to {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+</style>
+
+</head>
+<body>
+
+<!-- HALAMAN AWAL -->
+<div id="awal">
+    <h1>Klik untuk melihat sesuatu 👀</h1>
+    <button onclick="mulai()">Klik di sini</button>
+</div>
+
+<!-- HALAMAN KEJUTAN -->
+<div id="kejutan">
+    <div id="tulisan">24-april-2026</div>
+    <img src="foto.jpg.png">
+    <div id="text"></div>
+</div>
+
+<!-- MUSIK -->
+<audio autoplay loop>
+    <source src="lagu.mp3.mp3">
+</audio>
+
+<audio id="boom">
+    <source src="https://www.soundjay.com/explosion/sounds/explosion-01.mp3">
+</audio>
+
+<script>
+let pesan = "🎉 SELAMAT ULANG TAHUN 🎉\nUNTUK DIRIKU SENDIRI \n\nYang ke 18 Tahun ✨\ntuhan Yesus memberkati \n.............";
+
+let i = 0;
+function ketik() {
+    if (i < pesan.length) {
+        document.getElementById("text").innerHTML += pesan.charAt(i);
+        i++;
+        setTimeout(ketik, 75);
+    }
+}
+
+function loveFirework() {
+    let centerX = window.innerWidth / 2;
+    let centerY = window.innerHeight / 3;
+
+    let text = "LOVE";
+
+    for (let i = 0; i < text.length; i++) {
+        setTimeout(() => {
+            for (let j = 0; j < 40; j++) {
+                let partikel = document.createElement("div");
+                partikel.className = "love";
+                partikel.innerHTML = "💖";
+
+                let angle = Math.random() * 2 * Math.PI;
+                let radius = Math.random() * 120;
+
+                let x = centerX + i * 60 + Math.cos(angle) * radius;
+                let y = centerY + Math.sin(angle) * radius;
+
+                partikel.style.left = x + "px";
+                partikel.style.top = y + "px";
+
+                document.body.appendChild(partikel);
+
+                setTimeout(() => partikel.remove(), 1500);
+            }
+        }, i * 400);
+    }
+}
+
+function mulai() {
+    document.getElementById("awal").style.display = "none";
+    document.getElementById("kejutan").style.display = "block";
+
+    ketik(); // mulai efek typing
+
+    // confetti
+    for (let i = 0; i < 60; i++) {
+        let div = document.createElement("div");
+        div.className = "confetti";
+        div.style.left = Math.random() * 100 + "vw";
+        div.style.background = "hsl(" + Math.random()*360 + ",100%,60%)";
+        div.style.animationDuration = (Math.random() * 3 + 2) + "s";
+        document.body.appendChild(div);
+    }
+
+    // boneka
+   let list = ["🧸","🐻","🐰","🐼","🐱"];
+
+    for (let i = 0; i < 30; i++) {
+        let boneka = document.createElement("div");
+        boneka.innerHTML = list[Math.floor(Math.random()*list.length)];
+        boneka.className = "boneka";
+
+        boneka.style.left = Math.random() * 100 + "vw";
+        boneka.style.fontSize = (Math.random() * 20 + 20) + "px";
+        boneka.style.animationDuration = (Math.random() * 3 + 3) + "s";
+
+        document.body.appendChild(boneka);
+    }
+
+    for (let i = 0; i < 5; i++) {
+        let boneka = document.createElement("div");
+        boneka.innerHTML = "🧸";
+        boneka.className = "bonekaSamping";
+
+        boneka.style.top = Math.random() * 80 + "%";
+
+        document.body.appendChild(boneka);
+    }
+
+    for (let i = 0; i < 15; i++) {
+        let bg = document.createElement("div");
+        bg.innerHTML = "🧸";
+        bg.className = "bonekaBg";
+
+        bg.style.left = Math.random() * 100 + "vw";
+        bg.style.top = Math.random() * 100 + "vh";
+        bg.style.fontSize = "30px";
+
+        document.body.appendChild(bg);
+    }
+
+    // efek kembang api
+for (let i = 0; i < 15; i++) {
+    setTimeout(() => {
+        let x = Math.random() * window.innerWidth;
+        let y = Math.random() * window.innerHeight / 2;
+
+        for (let j = 0; j < 20; j++) {
+            let partikel = document.createElement("div");
+            partikel.className = "firework";
+
+            partikel.style.left = x + "px";
+            partikel.style.top = y + "px";
+            partikel.style.background = "hsl(" + Math.random()*360 + ",100%,60%)";
+
+            document.body.appendChild(partikel);
+
+            setTimeout(() => partikel.remove(), 1000);
+        }
+    }, i * 300);
+}
+}
+</script>
+
+</body>
+</html>
